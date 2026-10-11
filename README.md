@@ -14,8 +14,8 @@ Two design directions for the new timekeepers-ng.com home page. Each is a single
 
 | Site | Base directory | Build command | Publish directory |
 | --- | --- | --- | --- |
-| Dark | `dark` | *(empty)* | `dark` |
-| Half & half | `half-and-half` | *(empty)* | `half-and-half` |
+| Dark | *(empty)* | *(empty)* | `dark` |
+| Half & half | *(empty)* | *(empty)* | `half-and-half` |
 
 **Or one site with everything:** leave base directory empty and publish directory `.`, giving `/`, `/dark/` and `/half-and-half/`.
 
