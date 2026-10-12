@@ -927,7 +927,11 @@
     /* Phones: the photo takes the top of the slide and fades into black; the text sits below it, so it never covers the watch. */
     .slide { background: #0d0c0b; }
     .slide::after { display: none; }
-    .slide__img { bottom: auto; height: 50%; overflow: hidden; } /* clip the slow zoom so the photo edge stays clean */
+    /* The slide is split in two rows: the text takes the height it needs, the photo gets the rest.
+       However much the text wraps, it can never sit on top of the watch. */
+    .slide { display: grid; grid-template-rows: minmax(0, 1fr) auto; }
+    .slide__img { position: relative; inset: auto; height: auto; min-height: 0; overflow: hidden; } /* overflow: clips the slow zoom */
+    .slide__content { height: auto; justify-content: flex-start; }
     .slide__img::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 38%; background: linear-gradient(0deg, #0d0c0b 0%, rgba(13,12,11,0) 100%); }
     .slide__content { padding-bottom: 84px; }
     .visit.visit--bleed { display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start; min-height: 0; }
@@ -973,7 +977,8 @@
     .slide p { font-size: 15px; }
     .trust { gap: 14px 12px; }
     .progress button { width: 40px; }
-    .slide__ctas .btn { height: 46px; padding: 0 18px; } /* both slide buttons fit on one row */
+    .slide__ctas { gap: 10px; }
+    .slide__ctas .btn { height: 44px; padding: 0 14px; font-size: 11px; letter-spacing: .1em; } /* both slide buttons fit on one row, even on small phones */
     /* Support widget: round button, panel almost full screen */
     .help-fab { right: 16px; bottom: 16px; width: 54px; padding: 0; justify-content: center; }
     .help-fab__label { display: none; }
