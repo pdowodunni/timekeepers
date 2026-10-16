@@ -501,7 +501,9 @@
   .mm-pane > .mm-group:first-of-type { margin-top: 0; }
   /* Brand cards: logo + that brand's links */
   .mm-brands { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
-  .mm-brand { display: flex; flex-direction: column; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); overflow: hidden; }
+  .mm-brand { display: flex; flex-direction: column; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); overflow: hidden; transition: background-color 180ms ease, border-color 180ms ease; }
+  /* Hovering a brand card (menu and dropdown) keeps it white on black: the card goes pure black with a white outline. */
+  @media (hover: hover) and (pointer: fine) { .mm-brand:hover { background: #000; border-color: #fff; } }
   .mm-brand__logo { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; height: 104px; padding: 12px 14px; border-bottom: 1px solid var(--line); }
   .mm-brand__logo img, .mm-brand__logo b { margin: auto 0; }
   .mm-brand__name, .help-brand span { font-family: var(--heading); font-size: 12px; font-weight: 600; color: var(--ink); text-align: center; line-height: 1.25; }
@@ -513,7 +515,8 @@
     background: var(--bg); border: 1px solid var(--line); font-family: var(--heading); font-size: 12px; font-weight: 500; color: var(--ink);
     transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
   }
-  @media (hover: hover) and (pointer: fine) { .pill:hover { background: var(--ink); border-color: var(--ink); color: var(--on-light); } }
+  /* Link buttons (Watches, Jewellery, Men, Women…): on hover they stay white on black, outlined in white. */
+  @media (hover: hover) and (pointer: fine) { .pill:hover { background: #000; border-color: #fff; color: #fff; } }
 
   /* Store finder: country tabs, store cards, map */
   .store-tabs { margin-bottom: 16px; }
@@ -938,16 +941,9 @@
   .section:has(+ .tone-light) { padding-bottom: clamp(64px, 9vw, 112px); }
   .hero:has(+ .tone-light) { padding-bottom: clamp(40px, 5vw, 64px); }
   .tone-light .brand img { filter: none; mix-blend-mode: multiply; }   /* logos in their own colours on white tiles */
-  /* On hover a tile turns black and its logo and name turn white (the logo is recoloured with a
-     filter; "screen" blending drops its white background on the black tile). */
-  .tone-light .brand:not(.brand--all) { transition: transform 260ms var(--ease-out), box-shadow 260ms var(--ease-out), border-color 200ms ease, background-color 220ms ease; }
-  .tone-light .brand img { transition: transform 300ms var(--ease-out), filter 220ms ease; }
   @media (hover: hover) and (pointer: fine) {
     .tone-light .btn--dark:hover, .tone-light .btn--light:hover { background: #34312d; }
     .tone-light .brand:hover { box-shadow: 0 18px 40px -22px rgba(20,19,18,.35); }
-    .tone-light .brand:not(.brand--all):hover { background: #0d0c0b; border-color: #0d0c0b; }
-    .tone-light .brand:not(.brand--all):hover img { filter: grayscale(1) invert(1) contrast(1.35) brightness(1.4); mix-blend-mode: screen; }
-    .tone-light .brand:not(.brand--all):hover .brand__name, .tone-light .brand:not(.brand--all):hover .brand__word { color: #fff; }
   }
   .tone-light .club { box-shadow: 0 30px 60px -40px rgba(20,19,18,.35); }
   .tone-light .club h2, .tone-light .club__perks li { color: var(--ink); }
