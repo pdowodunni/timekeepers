@@ -430,6 +430,21 @@
   .mega .mm-brands { grid-template-columns: repeat(6, minmax(0, 1fr)); }
   .nav button[data-mega-active="true"]::after { transform: scaleX(1); }   /* underline stays while its dropdown is open */
   @media (max-width: 1100px), (hover: none) { .mega { display: none; } }
+  /* The dropdown is white: brand cards are white with the logos in their own colours. Hovering a
+     card turns it black, with the logo, name and link buttons in white. */
+  .mega.tone-light { background: #fff; }
+  .mega .mm-brand { background: #fff; transition: background-color 200ms ease, border-color 200ms ease; }
+  .mega .mm-brand__logo img { filter: none; mix-blend-mode: multiply; transition: filter 200ms ease; }
+  .mega .pill { background: #fff; transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease; }
+  @media (hover: hover) and (pointer: fine) {
+    .mega .mm-brand:hover { background: #0d0c0b; border-color: #0d0c0b; }
+    .mega .mm-brand:hover .mm-brand__logo { border-color: rgba(255,255,255,.12); }
+    .mega .mm-brand:hover .mm-brand__logo img { filter: grayscale(1) invert(1) contrast(1.35) brightness(1.4); mix-blend-mode: screen; }
+    .mega .mm-brand:hover .mm-brand__name, .mega .mm-brand:hover .mm-brand__logo b { color: #fff; }
+    .mega .mm-brand:hover .pill { background: transparent; border-color: rgba(255,255,255,.35); color: #fff; }
+    .mega .mm-brand:hover .pill:hover { background: #fff; border-color: #fff; color: #0d0c0b; }
+    .mega .mm-card:hover { border-color: #0d0c0b; }
+  }
 
   /* ═══ THE MENU (hamburger) ══════════════════════════════════════════════════════════════════
      Desktop: a wide panel slides in from the left. The left column lists every section; the
@@ -1144,7 +1159,7 @@
   </div>
   <!-- Hover dropdown (desktop): shows the Men / Women / Brands section of the menu under the bar.
        Filled by the script (HOVER DROPDOWNS) from the same MENU data as the full menu. -->
-  <div class="mega" data-mega data-open="false"></div>
+  <div class="mega tone-light" data-mega data-open="false"></div>
   <!-- Search uses the shop's own search, so results come from the live catalogue. -->
   <div class="search-panel" id="search" data-open="false">
     <div>
