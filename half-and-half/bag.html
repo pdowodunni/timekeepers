@@ -806,6 +806,11 @@
   .footer .locator__list { list-style: none; margin: 20px 0 0; padding: 16px 0 0; border-top: 1px solid #2a2724; display: grid; gap: 12px; }
   .locator__list li { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 14px; }
   .locator__list span { color: var(--dark-ink); }
+  .locator__list b { font-weight: 600; color: #fff; }
+  .locator__list em { font-style: normal; color: var(--dark-muted); font-size: 13px; }
+  .locator__me { display: inline-flex; align-items: center; gap: 6px; padding: 0; border: 0; background: none; color: var(--dark-muted); font: 600 12px var(--heading); cursor: pointer; }
+  .locator__me svg { width: 14px; height: 14px; }
+  @media (hover: hover) and (pointer: fine) { .locator__me:hover { color: #fff; } }
   .locator__list a { flex: none; font-family: var(--heading); font-size: 12px; font-weight: 600; color: var(--dark-muted); border-bottom: 1px solid #4a453f; transition: color 160ms ease, border-color 160ms ease; }
   @media (hover: hover) and (pointer: fine) { .locator__list a:hover { color: #fff; border-color: #fff; } }
   .footer__bottom { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; padding: 22px 0 96px; border-top: 1px solid #2a2724; font-size: 13px; } /* extra bottom space so the help button never covers it */
@@ -1599,7 +1604,10 @@
         <p><b data-store-total-footer>17 stores</b> across Nigeria. Find your nearest one, get directions and call ahead.</p>
         <button class="btn btn--red" type="button" data-menu-open="stores"><svg><use href="#i-pin"/></svg> Find a store</button>
         <ul class="locator__list">
-          <li><span>Ikeja City Mall, Lagos</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Shop%20L98%2C%20Ikeja%20City%20Mall%2C%20Alausa%2C%20Ikeja%2C%20Lagos" target="_blank" rel="noopener">Directions</a></li>
+          <!-- "Nearest store is at …": the script fills in the store closest to the visitor once they share
+               their location ("Use my location"); until then it shows the Ikeja City Mall store. -->
+          <li data-near-foot><span>Nearest store is at <b data-near-foot-name>Ikeja City Mall, Lagos</b> <em data-near-foot-km></em></span><a data-near-foot-dir href="https://www.google.com/maps/search/?api=1&amp;query=Shop%20L98%2C%20Ikeja%20City%20Mall%2C%20Alausa%2C%20Ikeja%2C%20Lagos" target="_blank" rel="noopener">Directions</a></li>
+          <li><button class="locator__me" type="button" data-near-foot-me><svg><use href="#i-pin"/></svg> Use my location</button></li>
         </ul>
       </div>
     </div>
@@ -1805,7 +1813,6 @@
      Matches the old site's menu (Men, Women, Brands, Watch, Jewelry, New Arrival, Sales,
      Products, Contact, About), plus Store locations. */
   const MENU = [
-    { type: "link", label: "Home", href: "index.html", icon: "i-home" },
     {
       type: "cards", id: "men", label: "Men", group: "Shop",
       intro: "Watches and accessories for him.",
@@ -2220,6 +2227,23 @@
   const byDistance = (pos, list = STORES) => list.filter((s) => s.lat).map((s) => ({ store: s, km: kmBetween(pos, s) })).sort((a, b) => a.km - b.km);
   const fmtKm = (km) => (km < 1 ? Math.round(km * 1000) + " m" : km < 10 ? km.toFixed(1) + " km" : Math.round(km) + " km");
   const locateError = (e) => (e && e.code === 1 ? "Location is turned off for this site. Choose a city instead." : "We couldn't find your location. Choose a city instead.");
+
+  /* Footer: "Nearest store is at …" (the closest store once the visitor has shared their location) */
+  {
+    const nameEl = document.querySelector("[data-near-foot-name]"), me = document.querySelector("[data-near-foot-me]");
+    const draw = (pos) => {
+      const n = pos && byDistance(pos)[0]; if (!n || !nameEl) return;
+      nameEl.textContent = n.store.name + ", " + n.store.city;
+      document.querySelector("[data-near-foot-km]").textContent = "(" + fmtKm(n.km) + " away)";
+      document.querySelector("[data-near-foot-dir]").href = directions(n.store.address);
+      me.closest("li").hidden = true;
+    };
+    draw(myPos);
+    me?.addEventListener("click", async () => {
+      me.lastChild.textContent = " Finding your location…";
+      try { draw(await locate()); } catch (err) { me.lastChild.textContent = " " + locateError(err).split(".")[0] + "."; }
+    });
+  }
 
   /* ═══ BOTTOM BAR (phones) ═══════════════════════════════════════════════════════════════════
      Marks the current page, and opens / closes the tray of quick links. */
