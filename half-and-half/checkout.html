@@ -738,6 +738,13 @@
   .car-count { font-family: var(--heading); font-size: 13px; font-weight: 500; color: var(--muted); font-variant-numeric: tabular-nums; min-width: 52px; text-align: right; }
   .product { position: relative; display: flex; flex-direction: column; gap: 14px; transition: opacity 260ms ease, transform 260ms var(--ease-out); }
   .product[hidden] { display: none; }
+  /* Each product sits in its own bordered card, so one product is clearly separate from the next.
+     The photo fills the top of the card; brand, name, ref and price sit below with padding. */
+  .product { gap: 0; border: 1px solid #d3ccc1; border-radius: 6px; background: #fff; overflow: hidden; }
+  .product > div:last-child { padding: 14px 14px 16px; border-top: 1px solid #e6e0d7; }
+  .product .product__media { border-radius: 0; }
+  @media (hover: hover) and (pointer: fine) { .product { transition: border-color 200ms ease, box-shadow 200ms ease; } .product:hover { border-color: #9c9285; box-shadow: 0 8px 24px rgba(20,19,18,.08); } }
+  @media (max-width: 640px) { .product > div:last-child { padding: 10px 10px 12px; } }
   /* Square white box; the photo is pinned inside with a margin so the whole product always shows. */
   /* The shop's photos are shot on white. Instead of white boxes, they sit in a softly lit "display case"
      (--display) and the photo is multiplied into it, so its white background takes the case's tone. */
