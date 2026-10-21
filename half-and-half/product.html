@@ -1362,6 +1362,9 @@
   .avail-store h3 { display: flex; align-items: center; gap: 8px; font-size: 15px; color: #1f1e1b; }
   .avail-store h3::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #2e9e5b; flex: none; }
   .avail-store p { margin: 0; font-size: 13px; color: #6b655d; }
+  .avail-sorry { display: grid; gap: 6px; margin-top: 16px; padding: 14px 16px; border-radius: 10px; background: #fdf0ee; border: 1px solid #f3c9c3; font-size: 14px; color: #45433d; }
+  .avail-sorry b { font-family: var(--heading); font-size: 14px; color: #1f1e1b; line-height: 1.4; }
+  .avail-sorry .btn { justify-self: start; height: 42px; margin-top: 6px; padding: 0 18px; font-size: 11px; background: #1f1e1b; color: #fff; }
   .avail-km { margin-left: auto; padding-left: 10px; font-size: 12px; font-weight: 600; color: #8b847b; white-space: nowrap; }
   .avail-near { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 46px; margin-top: 14px; padding: 8px 14px; border: 1px solid #1f1e1b; border-radius: 2px; background: #fff; color: #1f1e1b; cursor: pointer; font: 600 12px var(--heading); letter-spacing: .08em; text-transform: uppercase; }
   .avail-near svg { width: 16px; height: 16px; color: var(--red); }
@@ -3112,7 +3115,10 @@
     const groups = pos ? [["Nearest to you", [...list].sort((a, b) => (km(a) ?? 1e9) - (km(b) ?? 1e9))]]
       : [...new Set(list.map((s) => s.city || "Other"))].map((c) => [c, list.filter((s) => (s.city || "Other") === c)]);
     const nearBtn = inStock.length > 1 && !pos ? `<button class="avail-near" type="button" data-avail-near>${icon("i-pin")} Show the stores nearest to me</button>` : "";
-    document.querySelector("[data-avail-body]").innerHTML = nearBtn + (inStock.length ? groups.map(([c, stores]) => `<h3 class="avail-city">${esc(c)}</h3>` + stores.map((s, i) => `
+    // Visitor's city = city of their closest store. Nothing in stock there? Say so and offer delivery.
+    const myCity = pos ? TK.byDistance(pos)[0]?.store.city : "";
+    const sorryCity = pos && myCity && !inStock.some((s) => s.city === myCity) ? `<div class="avail-sorry"><b>Sorry, this piece isn't in any of our ${esc(myCity)} stores right now.</b><span>But we can deliver it to you anywhere in Nigeria${inStock.length ? ", or you can collect it from one of the stores below" : ""}.</span><button class="btn btn--dark" type="button" data-avail-deliver>Add to bag for delivery</button></div>` : "";
+    document.querySelector("[data-avail-body]").innerHTML = nearBtn + sorryCity + (inStock.length ? groups.map(([c, stores]) => `<h3 class="avail-city">${esc(c)}</h3>` + stores.map((s, i) => `
       <div class="avail-store"><h3>${esc(s.name)}${km(s) != null ? `<span class="avail-km">${TK.fmtKm(km(s))}</span>` : ""}</h3><p>In stock · ${esc(s.address)}</p>
         <div class="avail-store__actions"><a class="btn btn--dark" href="${TK.directions(s.address)}" target="_blank" rel="noopener">Directions ${icon("i-arrow")}</a><a class="btn btn--outline" href="${TK.telHref(s.phone || TK.PHONE)}">${icon("i-phone")} Call</a></div></div>`).join("")).join("")
       : `<p class="avail-note" style="margin-top:18px">This piece isn't in any of our stores right now. You can order it online, or call us and we'll tell you when it's back.</p>`)
@@ -3123,6 +3129,7 @@
   document.querySelector("[data-avail-cities]").addEventListener("click", (e) => { const b = e.target.closest("[data-city]"); if (b) { city = b.dataset.city; drawAvail(); } });
   // "Show the stores nearest to me" (asks for the visitor's location)
   document.querySelector("[data-avail-body]").addEventListener("click", async (e) => {
+    if (e.target.closest("[data-avail-deliver]")) { closeSheets(); TK.bag.add(p.slug); setTimeout(() => miniBag.open(), 300); return; }
     const b = e.target.closest("[data-avail-near]"); if (!b) return;
     b.disabled = true; b.textContent = "Finding your location…";
     try { await TK.locate(); city = ""; drawAvail(); }

@@ -1370,6 +1370,21 @@
   .co-cards i { font-style: normal; padding: 3px 6px; border: 1px solid var(--line); border-radius: 3px; font: 700 9px var(--heading); letter-spacing: .06em; color: var(--ink); }
   .co-near { display: inline-flex; align-items: center; gap: 8px; justify-self: start; margin-top: 8px; padding: 0; border: 0; background: none; color: var(--ink); cursor: pointer; font: 600 13px var(--heading); text-decoration: underline; }
   .co-near svg { width: 16px; height: 16px; color: var(--red); }
+  /* "Sorry, not in your city, but we can deliver" message */
+  .co-sorry { display: grid; gap: 6px; margin-bottom: 12px; padding: 14px 16px; border-radius: 10px; background: #fdf0ee; border: 1px solid #f3c9c3; font-size: 14px; color: var(--body); }
+  .co-sorry b { font-family: var(--heading); font-size: 14px; color: var(--ink); line-height: 1.4; }
+  .co-sorry .btn { justify-self: start; height: 42px; margin-top: 6px; padding: 0 18px; font-size: 11px; }
+  /* The chosen pick-up store. "Nearest location to you" gets a red label. */
+  .co-pick { display: grid; gap: 4px; margin-top: 12px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 10px; background: #fbfaf8; font-size: 14px; color: var(--body); }
+  .co-pick:empty { display: none; }
+  .co-pick__label { justify-self: start; margin-bottom: 4px; padding: 3px 8px; border-radius: 2px; background: #1f1e1b; color: #fff; font: 600 10px var(--heading); letter-spacing: .12em; text-transform: uppercase; }
+  .co-pick[data-nearest="true"] { border-color: var(--ink); }
+  .co-pick[data-nearest="true"] .co-pick__label { background: var(--red); }
+  .co-pick b { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; font-family: var(--heading); font-size: 16px; color: var(--ink); }
+  .co-pick em { font-style: normal; font-size: 12px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+  .co-pick__links a { color: var(--ink); text-decoration: underline; }
+  .co-pick__stock { margin-top: 6px; font-size: 13px; color: #2e7d4f; }
+  .co-pick__stock[data-none="true"] { color: var(--body); }
   .co-stock { margin: 8px 0 0; font-size: 13px; color: #2e7d4f; }
   .co-stock[data-none="true"] { color: var(--body); }
   .co-review { display: grid; gap: 0; border: 1px solid var(--line); border-radius: 10px; }
@@ -1607,7 +1622,7 @@
             <div data-ship-pickup hidden>
               <div class="co-field"><label for="f-store">Store to collect from *</label><select id="f-store" name="store" data-store-pick></select></div>
               <button class="co-near" type="button" data-pick-near><svg><use href="#i-pin"/></svg> Choose the store nearest me</button>
-              <p class="co-stock" data-stock></p>
+              <div class="co-pick" data-pick-card aria-live="polite"></div>
             </div>
             <div class="co-nav"><button class="co-link" type="button" data-next="1"><svg><use href="#i-left"/></svg> Back</button><button class="btn btn--dark co-next" type="button" data-next="3">Continue to payment <svg><use href="#i-arrow"/></svg></button></div>
           </fieldset>
@@ -3134,11 +3149,29 @@
     const pos = TK.getPos(), nearest = pos ? TK.byDistance(pos, all.length ? all : TK.STORES)[0] : null;
     const keep = sel.value || (nearest ? nearest.store.id : (all[0] || TK.STORES[0]).id);
     sel.innerHTML = CITY_ORDER.map((c) => { const g = TK.STORES.filter((s) => (s.city || "") === c);
-      return g.length ? `<optgroup label="${c || "Other"}">${g.map((s) => `<option value="${s.id}"${s.id === keep ? " selected" : ""}>${esc(s.name)}${all.includes(s) ? " · in stock" : ""}</option>`).join("")}</optgroup>` : ""; }).join("");
+      return g.length ? `<optgroup label="${c || "Other"}">${g.map((s) => `<option value="${s.id}"${s.id === keep ? " selected" : ""}>${esc(s.name)}${nearest && nearest.store === s ? (TK.byDistance(pos)[0].store === s ? " · nearest to you" : " · nearest with your items") : ""}${all.includes(s) ? " · in stock" : ""}</option>`).join("")}</optgroup>` : ""; }).join("");
     const ok = all.some((s) => s.id === sel.value);
-    const st = document.querySelector("[data-stock]");
-    st.textContent = ok ? "Everything in your bag is in stock at this store. We'll tell you when it's ready to collect." : "Not everything is in stock at this store; we'll transfer it and tell you when it's ready.";
-    st.dataset.none = String(!ok);
+    // Card for the chosen store. When it is the closest one, it says so clearly: "Nearest location to you".
+    const store = TK.STORES.find((s) => s.id === sel.value);
+    const km = pos && store && store.lat ? TK.byDistance(pos, [store])[0].km : null;
+    const isNearest = !!(nearest && store && nearest.store === store);
+    const closest = pos ? TK.byDistance(pos)[0] : null;   // closest store of all, stock or not
+    const label = closest && store === closest.store ? "Nearest location to you" : isNearest ? "Nearest location with your items in stock" : "Collect from";
+    // The visitor's city = the city of their closest store. If no store there has everything, say so
+    // and offer delivery instead.
+    const myCity = closest ? closest.store.city : "";
+    const cityHasAll = !!myCity && all.some((s) => s.city === myCity);
+    const n = items().length;
+    const sorry = closest && !cityHasAll ? `<div class="co-sorry"><b>Sorry, we don't have ${n > 1 ? "everything in your bag" : "this piece"} at any of our ${esc(myCity)} stores right now.</b><span>But we can deliver it to you anywhere in Nigeria${all.length ? ", or you can collect it from the store below" : ""}.</span><button class="btn btn--dark" type="button" data-use-delivery>Deliver it to me instead</button></div>` : "";
+    document.querySelector("[data-pick-card]").innerHTML = sorry + (store ? `
+      <span class="co-pick__label">${label}</span>
+      <b>${esc(store.name)}${km != null ? `<em>${TK.fmtKm(km)} away</em>` : ""}</b>
+      <span>${esc(store.address)}</span>
+      <span class="co-pick__links"><a href="${TK.directions(store.address)}" target="_blank" rel="noopener">Directions</a> · <a href="${TK.telHref(store.phone || TK.PHONE)}">${esc(store.phone || TK.PHONE)}</a></span>
+      <span class="co-pick__stock" data-none="${!ok}">${ok ? "Everything in your bag is in stock here. We'll tell you when it's ready to collect." : "Not everything is in stock here yet; we'll transfer it and tell you when it's ready."}</span>` : "");
+    document.querySelector("[data-pick-card]").dataset.nearest = String(isNearest);
+    document.querySelector("[data-pick-near]").hidden = !!pos;   // already located: no need to ask again
+    document.querySelector("[data-pick-card]").dataset.label = label === "Collect from" ? "" : label.toLowerCase();
   }
 
   // Show one step at a time and update the step indicator
@@ -3185,7 +3218,7 @@
   function drawReview() {
     const home = ship() === "home";
     const store = TK.STORES.find((s) => s.id === form.store.value);
-    const where = home ? [form.street.value, form.street2.value, form.city.value, form.state.value].filter(Boolean).join(", ") : `Collect at ${store ? store.name : ""}`;
+    const where = home ? [form.street.value, form.street2.value, form.city.value, form.state.value].filter(Boolean).join(", ") : `Collect at ${store ? store.name : ""}${store && document.querySelector("[data-pick-card]").dataset.label ? " (" + document.querySelector("[data-pick-card]").dataset.label + ")" : ""}`;
     document.querySelector("[data-review]").innerHTML = `
       <div><dt>Contact</dt><dd>${esc(form.name.value)}<br>${esc(form.email.value)} · +234 ${esc(form.phone.value)}</dd><button type="button" data-next="1">Edit</button></div>
       <div><dt>${home ? "Deliver to" : "Collect"}</dt><dd>${esc(where)}</dd><button type="button" data-next="2">Edit</button></div>`;
@@ -3211,8 +3244,16 @@
     b.textContent = "Finding your location…";
     try {
       const all = storesWithAll(), n = TK.byDistance(await TK.locate(), all.length ? all : TK.STORES)[0];
-      if (n) { sel.value = n.store.id; drawStores(); b.textContent = "Nearest store chosen (" + TK.fmtKm(n.km) + " away)"; }
+      if (n) { sel.value = n.store.id; drawStores(); b.hidden = true; }   // the card now says "Nearest location to you"
     } catch (err) { b.textContent = TK.locateError(err); }
+  });
+  // "Deliver it to me instead": switch to home delivery
+  form.addEventListener("click", (e) => {
+    if (!e.target.closest("[data-use-delivery]")) return;
+    form.querySelector('input[name="ship"][value="home"]').checked = true;
+    form.dispatchEvent(new Event("change", { bubbles: true }));
+    form.querySelector('input[name="ship"][value="home"]').dispatchEvent(new Event("change", { bubbles: true }));
+    form.querySelector("#f-street")?.focus();
   });
   window.addEventListener("tk-bag-change", drawSummary);
   drawSummary();
