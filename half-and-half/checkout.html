@@ -1622,8 +1622,8 @@
               <label class="co-opt"><input type="radio" name="ship" value="pickup"><span class="co-opt__box"><b>Collect in store</b><small>From one of our stores near you</small></span><em>Free</em></label>
             </div>
             <div data-ship-home>
-              <div class="co-field"><label for="f-street">Street and number *</label><input id="f-street" name="street" autocomplete="address-line1" required></div>
-              <div class="co-field"><label for="f-street2">Street 2 <small>(optional)</small></label><input id="f-street2" name="street2" autocomplete="address-line2"></div>
+              <div class="co-field"><label for="f-street">Street address *</label><input id="f-street" name="street" autocomplete="address-line1" required></div>
+              <div class="co-field"><label for="f-street2">Address line 2 <small>(optional)</small></label><input id="f-street2" name="street2" autocomplete="address-line2"></div>
               <div class="co-row">
                 <div class="co-field"><label for="f-city">City *</label><input id="f-city" name="city" autocomplete="address-level2" required></div>
                 <div class="co-field"><label for="f-state">State *</label><select id="f-state" name="state" autocomplete="address-level1" required data-states></select></div>
@@ -1644,7 +1644,7 @@
             <div class="co-review" data-review></div>
             <div class="co-options" role="radiogroup" aria-label="Payment method">
               <label class="co-opt"><input type="radio" name="pay" value="paystack" checked><span class="co-opt__box"><b>Pay with Paystack</b><small>Card, bank transfer or USSD</small></span><span class="co-cards" aria-label="Verve, Visa, Mastercard"><i>VERVE</i><i>VISA</i><i>MASTERCARD</i></span></label>
-              <label class="co-opt"><input type="radio" name="pay" value="wire"><span class="co-opt__box"><b>Wire transfer</b><small>We'll email our bank details; your order ships once payment arrives</small></span></label>
+              <label class="co-opt"><input type="radio" name="pay" value="wire"><span class="co-opt__box"><b>Wire transfer</b><small>We’ll email our bank details. We’ll send your order once payment arrives.</small></span></label>
             </div>
             <div class="co-promo"><details><summary>I have a promo code</summary><div class="promo__box"><input name="code" placeholder="Enter your code" autocomplete="off" aria-label="Promo code"><button type="button" data-promo>Apply</button></div><small data-promo-msg hidden></small></details></div>
             <div class="co-nav"><button class="co-link" type="button" data-next="2"><svg><use href="#i-left"/></svg> Back</button><button class="btn btn--red co-next co-pay" type="submit" data-pay>Pay now</button></div>
@@ -1976,7 +1976,7 @@
     },
     {
       type: "gender", id: "watch", label: "Watches by brand",
-      intro: "Pick a brand, then men's or women's.",
+      intro: "Pick a brand, then men’s or women’s.",
       brands: [
         { name: "Armitron", logo: LOGO("armitron"), men: C("watches-armitron-2"), women: C("watches-armitron-2") },
         { name: "French Connection", logo: LOGO("french-connection"), men: C("watches-french-connection-male-4"), women: C("watches-french-connection-ladies-5") },
@@ -2008,7 +2008,7 @@
     },
     {
       type: "cards", id: "new", label: "New arrivals",
-      intro: "Just in. See what's new.",
+      intro: "Just in. See what’s new.",
       cards: [
         { label: "New watches", href: C("watches-new-arrival-100"), img: IMG(20503) },
         { label: "New jewelry", href: C("jewelry-new-arrival-101"), img: IMG(23043) },
@@ -2851,7 +2851,7 @@
       id: "offers", ask: "Any special offers?",
       words: ["sale", "offer", "discount", "promo", "deal", "cheap", "price", "coupon", "black friday"],
       answer: () => [
-        "We run special offers for celebrations and international days, such as Valentine&rsquo;s Day, Mother&rsquo;s Day, Black Friday and Christmas. Here&rsquo;s what&rsquo;s on now:",
+        "We run special offers for celebrations and special days, such as Valentine&rsquo;s Day, Mother&rsquo;s Day, Black Friday and Christmas. Here&rsquo;s what&rsquo;s on now:",
         links([["Watches on sale", C("watches-sales-102")], ["Jewelry on sale", C("jewelry-sales-103")], ["Get offers by email", SIGNUP_URL]]),
       ],
     },
@@ -3162,7 +3162,7 @@
   }, true);
 
   /* ═══ CHECKOUT ═══ (design preview: nothing is sent or charged) */
-  const STATES = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "FCT Abuja", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"];
+  const STATES = ["Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "FCT (Abuja)", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"];
   const CITY_ORDER = ["Lagos", "Abuja", "Port Harcourt", "Ibadan", "Enugu", "Owerri", "Asaba", "Warri", ""];
   const form = document.querySelector("[data-form]");
   let step = 1;

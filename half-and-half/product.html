@@ -1888,7 +1888,7 @@
     },
     {
       type: "gender", id: "watch", label: "Watches by brand",
-      intro: "Pick a brand, then men's or women's.",
+      intro: "Pick a brand, then men’s or women’s.",
       brands: [
         { name: "Armitron", logo: LOGO("armitron"), men: C("watches-armitron-2"), women: C("watches-armitron-2") },
         { name: "French Connection", logo: LOGO("french-connection"), men: C("watches-french-connection-male-4"), women: C("watches-french-connection-ladies-5") },
@@ -1920,7 +1920,7 @@
     },
     {
       type: "cards", id: "new", label: "New arrivals",
-      intro: "Just in. See what's new.",
+      intro: "Just in. See what’s new.",
       cards: [
         { label: "New watches", href: C("watches-new-arrival-100"), img: IMG(20503) },
         { label: "New jewelry", href: C("jewelry-new-arrival-101"), img: IMG(23043) },
@@ -2763,7 +2763,7 @@
       id: "offers", ask: "Any special offers?",
       words: ["sale", "offer", "discount", "promo", "deal", "cheap", "price", "coupon", "black friday"],
       answer: () => [
-        "We run special offers for celebrations and international days, such as Valentine&rsquo;s Day, Mother&rsquo;s Day, Black Friday and Christmas. Here&rsquo;s what&rsquo;s on now:",
+        "We run special offers for celebrations and special days, such as Valentine&rsquo;s Day, Mother&rsquo;s Day, Black Friday and Christmas. Here&rsquo;s what&rsquo;s on now:",
         links([["Watches on sale", C("watches-sales-102")], ["Jewelry on sale", C("jewelry-sales-103")], ["Get offers by email", SIGNUP_URL]]),
       ],
     },
@@ -3085,8 +3085,12 @@
   // Photos: the main photo, then the extra gallery photos.
   const photos = [IMG(p.id).replace("image_512", "image_1024"), ...p.gallery.map((g) => `${SHOP}/web/image/product.image/${g}/image_1024`)];
   const s = p.specs;
+  // The shop's attribute names and values are in Title Case ("Stainless Steel Bracelet"); the table
+  // shows them in sentence case ("Stainless steel bracelet"). Words in capitals (ATM) are kept.
+  const sentence = (t) => String(t).split(" ").map((w, i) => (i && /^[A-Z][a-z]+$/.test(w) ? w.toLowerCase() : w).replace(/([-/])([A-Z])(?=[a-z])/g, (m, a, b) => a + b.toLowerCase())).join(" ");
+  const label = (k) => (k === "Analogue/Digital" ? "Display" : k === "Case Dimension" ? "Case size" : sentence(k));
   const facts = p.cat === "watches"
-    ? [["Case", s["Case Dimension"]], ["Movement", s["Movement Type"]], ["Water", (s["Water Resistance"] || "").split("/")[0].trim()]]
+    ? [["Case", s["Case Dimension"]], ["Movement", s["Movement Type"]], ["Water resistance", (s["Water Resistance"] || "").split("/")[0].trim()]]
     : [["Material", s["Material Type"]], ["Colour", s["Colour"] || s["Material Colour"]], ["For", s.Gender]];
   const brandMenu = TK.MENU.find((m) => m.id === "brands").brands.find((b) => b.name.startsWith(p.brand === "Victorinox" ? "Victorinox" : p.brand));
   const brandHref = brandMenu ? brandMenu.links[0][1] : SHOP + "/shop";
@@ -3120,10 +3124,10 @@
         <a href="tel:+2348083701920"><span>${icon("i-phone")} Ask us about this piece</span>${icon("i-right")}</a>
       </div>
       <details class="fold" open><summary>Specifications ${icon("i-right")}</summary><div class="fold__body">
-        <table class="specs"><tbody><tr><th>Brand</th><td>${esc(p.brand)}</td></tr>${Object.entries(s).map(([k, v]) => `<tr><th>${esc(k)}</th><td>${esc(v)}</td></tr>`).join("")}</tbody></table></div></details>
+        <table class="specs"><tbody><tr><th>Brand</th><td>${esc(p.brand)}</td></tr>${Object.entries(s).map(([k, v]) => `<tr><th>${esc(label(k))}</th><td>${esc(sentence(v))}</td></tr>`).join("")}</tbody></table></div></details>
       <details class="fold"><summary>Delivery &amp; returns ${icon("i-right")}</summary><div class="fold__body">
         <p style="margin:0 0 10px">We deliver across Nigeria; the options and cost for your address are shown at checkout. You can also collect from one of our 17 stores.</p>
-        <p style="margin:0">Returns are accepted within 14 days. Contact our team at <a href="mailto:ecomm@timekeepers-ng.com" style="border-bottom:1px solid">ecomm@timekeepers-ng.com</a> to arrange one.</p></div></details>
+        <p style="margin:0">Returns are accepted within 14 days. Contact our team at <a href="mailto:ecomm@timekeepers-ng.com" style="border-bottom:1px solid">ecomm@timekeepers-ng.com</a> to arrange a return.</p></div></details>
     </div>`;
   // Gallery: swipe on phones; dots / thumbnails jump to a photo; the counter follows.
   const track = document.querySelector("[data-track]");
