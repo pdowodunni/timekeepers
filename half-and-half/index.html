@@ -1418,8 +1418,46 @@
     -->
   </section>
 
-  <!-- (The "Shop by brand" logo grid was removed at the client's request. Brands are reached from
-       the Brands dropdown, the menu and the brands page.) -->
+  <!-- ═══ SHOP BY BRAND ═══════════════════════════════════════════════════════════════════════
+       FOR DEVELOPERS: 17 brand tiles + an "All brands" tile; 6 per row on desktop, 4 on tablets,
+       2 on phones. Logos are capped at 40px tall AND 70% of the tile width, so wide logos (Guess,
+       Versace) and tall ones (Victorinox) look the same size. Each tile links to the brand's watch
+       category (most brands are watch-first); the menu has every link for each brand.
+
+       One <a class="brand"> per brand: logo only (data-logo="name", filled from BRAND_LOGOS) + link; the
+       brand name goes in aria-label for screen readers.
+       For a brand without a logo file, use <span class="brand__word">NAME</span> instead. -->
+  <section class="section tone-light tone-light--end" id="brands" aria-label="Our brands">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <div class="kicker">Our brands</div>
+          <p>The world&rsquo;s favourite watch and jewelry brands, in our stores across Nigeria.</p>
+        </div>
+        <a class="link-arrow" href="https://www.timekeepers-ng.com/shop/all-brands">View all brands <svg><use href="#i-arrow"/></svg></a>
+      </div>
+      <div class="brands reveal">
+        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-victorinox-44" aria-label="Victorinox"><img data-logo="victorinox" alt="" loading="lazy"></a>
+        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-versace-108" aria-label="Versace"><img data-logo="versace" alt="" loading="lazy"></a>
+        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-police-61" aria-label="Police"><img data-logo="police" alt="" loading="lazy"></a>
+        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-guess-32" aria-label="Guess"><img data-logo="guess" alt="" loading="lazy"></a>
+        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-guess-collection-35" aria-label="Guess Collection"><img data-logo="guess-collection" alt="" loading="lazy"></a>
+        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-tommy-hilfiger-21" aria-label="Tommy Hilfiger"><img data-logo="tommy-hilfiger" alt="" loading="lazy"></a>
+        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-cerruti-1881-38" aria-label="Cerruti 1881"><span class="brand__word">CERRUTI 1881</span></a>
+        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-david-plein-24" aria-label="David Plein"><img data-logo="david-plein" alt="" loading="lazy"></a>
+        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-sekonda-11" aria-label="Sekonda"><img data-logo="sekonda" alt="" loading="lazy"></a>
+        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-beverly-hills-polo-club-112" aria-label="Beverly Hills Polo Club"><img data-logo="beverly-hills-polo-club" alt="" loading="lazy"></a>
+        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-wenger-41" aria-label="Wenger"><img data-logo="wenger" alt="" loading="lazy"></a>
+        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-ciga-design-104" aria-label="CIGA Design"><img data-logo="ciga-design" alt="" loading="lazy"></a>
+        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-french-connection-3" aria-label="French Connection"><img data-logo="french-connection" alt="" loading="lazy"></a>
+        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-lee-cooper-47" aria-label="Lee Cooper"><img data-logo="lee-cooper" alt="" loading="lazy"></a>
+        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-armitron-2" aria-label="Armitron"><img data-logo="armitron" alt="" loading="lazy"></a>
+        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-ducati-117" aria-label="Ducati"><img data-logo="ducati" alt="" loading="lazy"></a>
+        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-kyros-135" aria-label="Kyros"><img data-logo="kyros" alt="" loading="lazy"></a>
+        <a class="brand brand--all" href="https://www.timekeepers-ng.com/shop/all-brands">All brands <svg><use href="#i-arrow"/></svg></a>
+      </div>
+    </div>
+  </section>
 
   <!-- ═══ SHOP WATCHES / SHOP JEWELRY ═══════════════════════════════════════════════════════
        Two big photo panels. The small "chips" are extra links inside each panel.
