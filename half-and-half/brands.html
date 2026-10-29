@@ -511,6 +511,9 @@
   .mm-group { margin: 22px 0 10px; font-family: var(--heading); font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
   .mm-pane > .mm-group:first-of-type { margin-top: 0; }
   /* Brand cards: logo + that brand's links */
+  button.mm-brand__logo { width: 100%; border: 0; border-bottom: 1px solid var(--line); background: none; cursor: pointer; }
+  button.pill { cursor: pointer; }
+  .pill--store { border-color: var(--red) !important; color: var(--red) !important; }
   .mm-brands { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
   .mm-brand { display: flex; flex-direction: column; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); overflow: hidden; transition: background-color 180ms ease, border-color 180ms ease; }
   /* Hovering a brand card (menu and dropdown) keeps it white on black: the card goes pure black with a white outline. */
@@ -1403,6 +1406,7 @@
       <button type="button" data-menu-open="men">Men</button>
       <button type="button" data-menu-open="women">Women</button>
       <button type="button" data-menu-open="brands">Brands</button>
+      <button type="button" data-menu-open="sunglasses">Sunglasses</button>
       <button type="button" data-menu-open="stores">Stores</button>
       <a class="is-sale" href="https://www.timekeepers-ng.com/shop/category/watches-sales-102">Sale</a>
     </nav>
@@ -1840,6 +1844,17 @@
         { label: "Jewelry on sale", href: C("jewelry-sales-103"), img: IMG(14716) },
       ],
     },
+    // Sunglasses are sold in our stores only (not online): each brand's button opens the store finder.
+    {
+      type: "sunglasses", id: "sunglasses", label: "Sunglasses",
+      intro: "Available only in our stores. Visit one to try them on.",
+      brands: [
+        { name: "Guess", logo: LOGO("guess") },
+        { name: "Lee Cooper", logo: LOGO("lee-cooper") },
+        { name: "Police", logo: LOGO("police") },
+        { name: "Tommy Hilfiger", logo: LOGO("tommy-hilfiger") },
+      ],
+    },
     { type: "link", label: "All products", href: `${SHOP}/shop` },
     { type: "stores", id: "stores", label: "Store locations", group: "Visit us", icon: "i-pin" },
     { type: "link", label: "Contact us", href: `${SHOP}/contactus` },
@@ -1938,6 +1953,12 @@
           <a class="mm-brand__logo" href="${b.links[0][1]}" aria-label="${esc(b.name)}">${logoAndName(b, "mm-brand__name")}</a>
           <div class="mm-brand__links">${b.links.map(([l, h]) => `<a class="pill" href="${h}">${esc(l)}</a>`).join("")}</div>
         </div>`).join("")}</div>`).join(""),
+
+    sunglasses: (m) => `<div class="mm-brands">${m.brands.map((b) => `
+        <div class="mm-brand">
+          <button type="button" class="mm-brand__logo" data-menu-open="stores" aria-label="${esc(b.name)} sunglasses: find a store">${logoHtml(b)}</button>
+          <div class="mm-brand__links"><button type="button" class="pill pill--store" data-menu-open="stores">Find a store</button></div>
+        </div>`).join("")}</div>`,
 
     gender: (m) => `<div class="mm-brands">${m.brands.map((b) => `
         <div class="mm-brand">
@@ -2101,7 +2122,7 @@
      Reuses the menu's own drawing code (renderers) so the dropdown and the menu always match. */
   {
     const mega = document.querySelector("[data-mega]");
-    const MEGA_SECTIONS = ["men", "women", "brands"];
+    const MEGA_SECTIONS = ["men", "women", "brands", "sunglasses"];
     const canHover = window.matchMedia("(hover: hover) and (pointer: fine) and (min-width: 1101px)");
     const triggers = [...document.querySelectorAll(".nav [data-menu-open]")].filter((b) => MEGA_SECTIONS.includes(b.dataset.menuOpen));
     let megaTimer = null, megaFor = null;

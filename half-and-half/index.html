@@ -511,6 +511,9 @@
   .mm-group { margin: 22px 0 10px; font-family: var(--heading); font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
   .mm-pane > .mm-group:first-of-type { margin-top: 0; }
   /* Brand cards: logo + that brand's links */
+  button.mm-brand__logo { width: 100%; border: 0; border-bottom: 1px solid var(--line); background: none; cursor: pointer; }
+  button.pill { cursor: pointer; }
+  .pill--store { border-color: var(--red) !important; color: var(--red) !important; }
   .mm-brands { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
   .mm-brand { display: flex; flex-direction: column; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); overflow: hidden; transition: background-color 180ms ease, border-color 180ms ease; }
   /* Hovering a brand card (menu and dropdown) keeps it white on black: the card goes pure black with a white outline. */
@@ -1257,6 +1260,7 @@
       <button type="button" data-menu-open="men">Men</button>
       <button type="button" data-menu-open="women">Women</button>
       <button type="button" data-menu-open="brands">Brands</button>
+      <button type="button" data-menu-open="sunglasses">Sunglasses</button>
       <button type="button" data-menu-open="stores">Stores</button>
       <a class="is-sale" href="https://www.timekeepers-ng.com/shop/category/watches-sales-102">Sale</a>
     </nav>
@@ -1414,47 +1418,8 @@
     -->
   </section>
 
-  <!-- ═══ SHOP BY BRAND ═══════════════════════════════════════════════════════════════════════
-       FOR DEVELOPERS: 17 brand tiles + an "All brands" tile; 6 per row on desktop, 4 on tablets,
-       2 on phones. Logos are capped at 40px tall AND 70% of the tile width, so wide logos (Guess,
-       Versace) and tall ones (Victorinox) look the same size. Each tile links to the brand's watch
-       category (most brands are watch-first); the menu has every link for each brand.
-
-       One <a class="brand"> per brand: logo only (data-logo="name", filled from BRAND_LOGOS) + link; the
-       brand name goes in aria-label for screen readers.
-       For a brand without a logo file, use <span class="brand__word">NAME</span> instead. -->
-  <section class="section tone-light tone-light--end" id="brands" aria-labelledby="brands-title">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div>
-          <div class="kicker">Our brands</div>
-          <h2 id="brands-title">Shop by brand</h2>
-          <p>The world&rsquo;s favourite watch and jewelry brands, in our stores across Nigeria.</p>
-        </div>
-        <a class="link-arrow" href="https://www.timekeepers-ng.com/shop/all-brands">View all brands <svg><use href="#i-arrow"/></svg></a>
-      </div>
-      <div class="brands reveal">
-        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-victorinox-44" aria-label="Victorinox"><img data-logo="victorinox" alt="" loading="lazy"></a>
-        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-versace-108" aria-label="Versace"><img data-logo="versace" alt="" loading="lazy"></a>
-        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-police-61" aria-label="Police"><img data-logo="police" alt="" loading="lazy"></a>
-        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-guess-32" aria-label="Guess"><img data-logo="guess" alt="" loading="lazy"></a>
-        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-guess-collection-35" aria-label="Guess Collection"><img data-logo="guess-collection" alt="" loading="lazy"></a>
-        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-tommy-hilfiger-21" aria-label="Tommy Hilfiger"><img data-logo="tommy-hilfiger" alt="" loading="lazy"></a>
-        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-cerruti-1881-38" aria-label="Cerruti 1881"><span class="brand__word">CERRUTI 1881</span></a>
-        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-david-plein-24" aria-label="David Plein"><img data-logo="david-plein" alt="" loading="lazy"></a>
-        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-sekonda-11" aria-label="Sekonda"><img data-logo="sekonda" alt="" loading="lazy"></a>
-        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-beverly-hills-polo-club-112" aria-label="Beverly Hills Polo Club"><img data-logo="beverly-hills-polo-club" alt="" loading="lazy"></a>
-        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-wenger-41" aria-label="Wenger"><img data-logo="wenger" alt="" loading="lazy"></a>
-        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-ciga-design-104" aria-label="CIGA Design"><img data-logo="ciga-design" alt="" loading="lazy"></a>
-        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-french-connection-3" aria-label="French Connection"><img data-logo="french-connection" alt="" loading="lazy"></a>
-        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-lee-cooper-47" aria-label="Lee Cooper"><img data-logo="lee-cooper" alt="" loading="lazy"></a>
-        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-armitron-2" aria-label="Armitron"><img data-logo="armitron" alt="" loading="lazy"></a>
-        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-ducati-117" aria-label="Ducati"><img data-logo="ducati" alt="" loading="lazy"></a>
-        <a class="brand" href="https://www.timekeepers-ng.com/shop/category/watches-kyros-135" aria-label="Kyros"><img data-logo="kyros" alt="" loading="lazy"></a>
-        <a class="brand brand--all" href="https://www.timekeepers-ng.com/shop/all-brands">All brands <svg><use href="#i-arrow"/></svg></a>
-      </div>
-    </div>
-  </section>
+  <!-- (The "Shop by brand" logo grid was removed at the client's request. Brands are reached from
+       the Brands dropdown, the menu and the brands page.) -->
 
   <!-- ═══ SHOP WATCHES / SHOP JEWELRY ═══════════════════════════════════════════════════════
        Two big photo panels. The small "chips" are extra links inside each panel.
@@ -1948,6 +1913,17 @@
         { label: "Jewelry on sale", href: C("jewelry-sales-103"), img: IMG(14716) },
       ],
     },
+    // Sunglasses are sold in our stores only (not online): each brand's button opens the store finder.
+    {
+      type: "sunglasses", id: "sunglasses", label: "Sunglasses",
+      intro: "Available only in our stores. Visit one to try them on.",
+      brands: [
+        { name: "Guess", logo: LOGO("guess") },
+        { name: "Lee Cooper", logo: LOGO("lee-cooper") },
+        { name: "Police", logo: LOGO("police") },
+        { name: "Tommy Hilfiger", logo: LOGO("tommy-hilfiger") },
+      ],
+    },
     { type: "link", label: "All products", href: `${SHOP}/shop` },
     { type: "stores", id: "stores", label: "Store locations", group: "Visit us", icon: "i-pin" },
     { type: "link", label: "Contact us", href: `${SHOP}/contactus` },
@@ -2046,6 +2022,12 @@
           <a class="mm-brand__logo" href="${b.links[0][1]}" aria-label="${esc(b.name)}">${logoAndName(b, "mm-brand__name")}</a>
           <div class="mm-brand__links">${b.links.map(([l, h]) => `<a class="pill" href="${h}">${esc(l)}</a>`).join("")}</div>
         </div>`).join("")}</div>`).join(""),
+
+    sunglasses: (m) => `<div class="mm-brands">${m.brands.map((b) => `
+        <div class="mm-brand">
+          <button type="button" class="mm-brand__logo" data-menu-open="stores" aria-label="${esc(b.name)} sunglasses: find a store">${logoHtml(b)}</button>
+          <div class="mm-brand__links"><button type="button" class="pill pill--store" data-menu-open="stores">Find a store</button></div>
+        </div>`).join("")}</div>`,
 
     gender: (m) => `<div class="mm-brands">${m.brands.map((b) => `
         <div class="mm-brand">
@@ -2209,7 +2191,7 @@
      Reuses the menu's own drawing code (renderers) so the dropdown and the menu always match. */
   {
     const mega = document.querySelector("[data-mega]");
-    const MEGA_SECTIONS = ["men", "women", "brands"];
+    const MEGA_SECTIONS = ["men", "women", "brands", "sunglasses"];
     const canHover = window.matchMedia("(hover: hover) and (pointer: fine) and (min-width: 1101px)");
     const triggers = [...document.querySelectorAll(".nav [data-menu-open]")].filter((b) => MEGA_SECTIONS.includes(b.dataset.menuOpen));
     let megaTimer = null, megaFor = null;
