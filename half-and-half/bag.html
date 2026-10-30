@@ -500,6 +500,7 @@
   .mm-card__img img { position: absolute; inset: 14px; width: calc(100% - 28px); height: calc(100% - 28px); object-fit: contain; mix-blend-mode: multiply; transition: transform 500ms var(--ease-out); }
   .mm-card__label { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 12px 14px; border-top: 1px solid var(--line); font-family: var(--heading); font-size: 14px; font-weight: 600; color: var(--ink); }
   button.mm-card { width: 100%; padding: 0; font: inherit; color: inherit; text-align: left; cursor: pointer; }
+  .footer__tag--gap { margin-top: 14px; }
   .footer__tag { display: block; margin-bottom: 2px; font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
   .mm-card__label svg { width: 14px; height: 14px; color: var(--muted); flex: none; }
   .mm-card:active { transform: scale(0.98); }
@@ -525,7 +526,7 @@
   .mm-brand__name, .help-brand span { font-family: var(--heading); font-size: 12px; font-weight: 600; color: var(--ink); text-align: center; line-height: 1.25; }
   .mm-brand__logo img { max-height: 30px; width: auto; max-width: 58%; object-fit: contain; filter: grayscale(1) invert(1) contrast(1.35) brightness(1.4); mix-blend-mode: screen; }
   .mm-brand__logo b, .help-brand b { font-family: "Times New Roman", Georgia, serif; font-weight: 400; font-size: 17px; letter-spacing: .12em; color: var(--ink); }
-  .mm-brand__links { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 12px 12px; }
+  .mm-brand__links { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; padding: 10px 12px 12px; }
   .pill {
     display: inline-flex; align-items: center; height: 30px; padding: 0 12px; border-radius: 999px;
     background: var(--bg); border: 1px solid var(--line); font-family: var(--heading); font-size: 12px; font-weight: 500; color: var(--ink);
@@ -1600,8 +1601,8 @@
       <div class="footer__contact">
         <h4>Contact</h4>
         <address>
-          <span class="footer__tag">Complaints</span> <a href="tel:+2348083701920">0808 370 1920</a><br>
-          <a href="mailto:service@timekeepers-ng.com">service@timekeepers-ng.com</a><br>
+          <span class="footer__tag">Complaints line</span><a href="tel:+2348083701920">0808 370 1920</a><br>
+          <span class="footer__tag footer__tag--gap">Email</span><a href="mailto:service@timekeepers-ng.com">service@timekeepers-ng.com</a><br>
           <a href="mailto:ecomm@timekeepers-ng.com">ecomm@timekeepers-ng.com</a>
         </address>
       </div>
