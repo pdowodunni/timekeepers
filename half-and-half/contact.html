@@ -777,6 +777,8 @@
   .visit h2 { color: #fff; font-size: clamp(30px, 3.8vw, 46px); line-height: 1.08; }
   .visit p { margin: 0; color: rgba(255,255,255,.78); }
   .visit__ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+  .visit__ctas > .btn { flex-basis: 100%; max-width: max-content; }   /* the store button gets its own row */
+  .visit__contact { display: flex; gap: 10px; flex-wrap: wrap; }   /* Call us and Chat with us: small, side by side */
 
   /* ═══ SPECIAL OFFERS SIGN-UP BAND ═══════════════════════════════════════════════════════════ */
   .club { position: relative; overflow: hidden; border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface); color: var(--dark-ink); display: grid; grid-template-columns: 1.2fr 1fr; align-items: center; gap: 24px; }

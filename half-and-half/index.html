@@ -777,6 +777,8 @@
   .visit h2 { color: #fff; font-size: clamp(30px, 3.8vw, 46px); line-height: 1.08; }
   .visit p { margin: 0; color: rgba(255,255,255,.78); }
   .visit__ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+  .visit__ctas > .btn { flex-basis: 100%; max-width: max-content; }   /* the store button gets its own row */
+  .visit__contact { display: flex; gap: 10px; flex-wrap: wrap; }   /* Call us and Chat with us: small, side by side */
 
   /* ═══ SPECIAL OFFERS SIGN-UP BAND ═══════════════════════════════════════════════════════════ */
   .club { position: relative; overflow: hidden; border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface); color: var(--dark-ink); display: grid; grid-template-columns: 1.2fr 1fr; align-items: center; gap: 24px; }
@@ -1603,8 +1605,10 @@
           <p>Visit one of our 17 stores across Nigeria to see the collections up close, try them on and get advice from our team.</p>
           <div class="visit__ctas">
             <button class="btn btn--light" type="button" data-menu-open="stores">Find your nearest store <svg><use href="#i-arrow"/></svg></button>
-            <a class="btn btn--ghost" href="tel:+2348083701920"><svg><use href="#i-phone"/></svg> Call us: 0808 370 1920</a>
-            <a class="btn btn--ghost" href="https://wa.me/2348129606601" target="_blank" rel="noopener"><svg><use href="#i-chat"/></svg> WhatsApp: chat with us</a>
+            <div class="visit__contact">
+              <a class="btn btn--ghost btn--sm" href="tel:+2348083701920" aria-label="Call us on 0808 370 1920"><svg><use href="#i-phone"/></svg> Call us</a>
+              <a class="btn btn--ghost btn--sm" href="https://wa.me/2348129606601" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp"><svg><use href="#i-chat"/></svg> Chat with us</a>
+            </div>
           </div>
         </div>
       </div>
