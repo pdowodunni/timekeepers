@@ -1393,8 +1393,8 @@
 <div class="announce" data-announce>
   <div class="announce__viewport">
     <div class="announce__track">
-      <div class="announce__group"><span class="announce__item">New season arrivals are in. <a href="https://www.timekeepers-ng.com/shop/category/watches-new-arrival-100">Shop new watches</a></span><span class="announce__item">17 stores across Nigeria. <button type="button" class="announce__link" data-menu-open="stores">Find a store</button></span><span class="announce__item">Original brands, authorised products</span><span class="announce__item">New season arrivals are in. <a href="https://www.timekeepers-ng.com/shop/category/watches-new-arrival-100">Shop new watches</a></span><span class="announce__item">17 stores across Nigeria. <button type="button" class="announce__link" data-menu-open="stores">Find a store</button></span><span class="announce__item">Original brands, authorised products</span></div>
-      <div class="announce__group" aria-hidden="true"><span class="announce__item">New season arrivals are in. <a href="https://www.timekeepers-ng.com/shop/category/watches-new-arrival-100">Shop new watches</a></span><span class="announce__item">17 stores across Nigeria. <button type="button" class="announce__link" data-menu-open="stores">Find a store</button></span><span class="announce__item">Original brands, authorised products</span><span class="announce__item">New season arrivals are in. <a href="https://www.timekeepers-ng.com/shop/category/watches-new-arrival-100">Shop new watches</a></span><span class="announce__item">17 stores across Nigeria. <button type="button" class="announce__link" data-menu-open="stores">Find a store</button></span><span class="announce__item">Original brands, authorised products</span></div>
+      <div class="announce__group"><span class="announce__item">New season arrivals are in <a href="https://www.timekeepers-ng.com/shop/category/watches-new-arrival-100">Shop new watches</a></span><span class="announce__item">17 stores across Nigeria <button type="button" class="announce__link" data-menu-open="stores">Find a store</button></span><span class="announce__item">Original brands, authorised products</span><span class="announce__item">New season arrivals are in <a href="https://www.timekeepers-ng.com/shop/category/watches-new-arrival-100">Shop new watches</a></span><span class="announce__item">17 stores across Nigeria <button type="button" class="announce__link" data-menu-open="stores">Find a store</button></span><span class="announce__item">Original brands, authorised products</span></div>
+      <div class="announce__group" aria-hidden="true"><span class="announce__item">New season arrivals are in <a href="https://www.timekeepers-ng.com/shop/category/watches-new-arrival-100">Shop new watches</a></span><span class="announce__item">17 stores across Nigeria <button type="button" class="announce__link" data-menu-open="stores">Find a store</button></span><span class="announce__item">Original brands, authorised products</span><span class="announce__item">New season arrivals are in <a href="https://www.timekeepers-ng.com/shop/category/watches-new-arrival-100">Shop new watches</a></span><span class="announce__item">17 stores across Nigeria <button type="button" class="announce__link" data-menu-open="stores">Find a store</button></span><span class="announce__item">Original brands, authorised products</span></div>
     </div>
   </div>
   <button class="announce__close" type="button" aria-label="Close announcement" data-announce-close><svg><use href="#i-close"/></svg></button>
@@ -2716,7 +2716,7 @@
       id: "offers", ask: "Any special offers?",
       words: ["sale", "offer", "discount", "promo", "deal", "cheap", "price", "coupon", "black friday"],
       answer: () => [
-        "We run special offers for celebrations and special days, such as Valentine&rsquo;s Day, Mother&rsquo;s Day, Black Friday and Christmas. Here&rsquo;s what&rsquo;s on now:",
+        "We run special offers for celebrations and special days, such as Valentine&rsquo;s Day, Mothers&rsquo; Day, Black Friday and Christmas. Here&rsquo;s what&rsquo;s on now:",
         links([["Watches on sale", C("watches-sales-102")], ["Jewelry on sale", C("jewelry-sales-103")], ["Get offers by email", SIGNUP_URL]]),
       ],
     },
@@ -2909,6 +2909,14 @@
       if (/^\/shop\/[^/]+-\d+$/.test(p)) return "product.html?p=" + encodeURIComponent(p.split("/")[2]);
       return null;
     };
+    // Point the links themselves at the preview pages, so hovering, opening in a new tab and long-press
+    // all use them too. Links drawn later (the menu) are updated when the pointer or focus reaches them.
+    const relink = (a) => { if (a.target === "_blank") return; const to = route(a.href); if (to) a.setAttribute("href", to); };
+    document.querySelectorAll("a[href]").forEach(relink);
+    ["pointerover", "focusin", "touchstart"].forEach((ev) => document.addEventListener(ev, (e) => {
+      const a = e.target.closest && e.target.closest("a[href]");
+      if (a) relink(a);
+    }, { passive: true }));
     document.addEventListener("click", (e) => {
       const a = e.target.closest("a[href]");
       if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || a.target === "_blank") return;
