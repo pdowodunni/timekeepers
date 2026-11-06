@@ -1347,6 +1347,7 @@
   .mb-btns .btn--dark { background: #1f1e1b; color: #fff; }
 
 
+
   .posts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(18px, 2.4vw, 28px); }
   .post { position: relative; display: flex; flex-direction: column; background: #fff; border: 1.5px solid #c9c0b3; border-radius: 6px; overflow: hidden; box-shadow: 0 2px 4px rgba(20,19,18,.06), 0 8px 22px rgba(20,19,18,.10); transition: border-color 200ms ease, box-shadow 200ms ease; }
   .post__img { display: block; aspect-ratio: 3 / 2; overflow: hidden; background: var(--sand); }
@@ -1366,6 +1367,7 @@
   }
   .post:focus-within { outline: 2px solid var(--ink); outline-offset: 2px; }
   .post h2 a:focus { outline: none; }
+
   /* The newest post runs wide on larger screens. */
   @media (min-width: 861px) {
     .post--lead { grid-column: 1 / -1; flex-direction: row; }
@@ -1521,7 +1523,7 @@
 <main>
   <!-- ═══ BLOG ════════════════════════════════════════════════════════════════════════════════
        The posts from the current blog (timekeepers-ng.com/blog), newest first; each opens the post
-       on the current site. On the real site this is Odoo's blog page, so the list stays up to date
+       on the new post page (blog-post.html). On the real site this is Odoo's blog page, so the list stays up to date
        automatically. Photos are the blog's own cover images. -->
   <section class="page-head" aria-labelledby="blog-title">
     <div class="wrap">
@@ -3078,7 +3080,8 @@
       if (p === "/shop/cart") return "bag.html";
       if (p === "/contactus") return "contact.html";
       if (p === "/about-us") return "about.html";
-      if (p === "/blog") return "blog.html";
+      if (/^\/blog\/(?!tag\/)[^/]+\/(?!tag\/)[^/]*?(\d+)$/.test(p)) return "blog-post.html?id=" + p.match(/(\d+)$/)[1];   // a post: /blog/<blog>/<post>
+      if (p.startsWith("/blog")) return "blog.html";   // the blog, one of its blogs, or a tag
       if (p === "/terms") return "legal.html" + u.hash;
       if (p === "/shop/compare") return "compare.html";
       if (/^\/shop\/[^/]+-\d+$/.test(p)) return "product.html?p=" + encodeURIComponent(p.split("/")[2]);

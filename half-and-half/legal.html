@@ -3193,7 +3193,8 @@
       if (p === "/shop/cart") return "bag.html";
       if (p === "/contactus") return "contact.html";
       if (p === "/about-us") return "about.html";
-      if (p === "/blog") return "blog.html";
+      if (/^\/blog\/(?!tag\/)[^/]+\/(?!tag\/)[^/]*?(\d+)$/.test(p)) return "blog-post.html?id=" + p.match(/(\d+)$/)[1];   // a post: /blog/<blog>/<post>
+      if (p.startsWith("/blog")) return "blog.html";   // the blog, one of its blogs, or a tag
       if (p === "/terms") return "legal.html" + u.hash;
       if (p === "/shop/compare") return "compare.html";
       if (/^\/shop\/[^/]+-\d+$/.test(p)) return "product.html?p=" + encodeURIComponent(p.split("/")[2]);
