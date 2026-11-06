@@ -114,7 +114,7 @@
       • Ikeja City Mall store, phone 0808 370 1920, service@ and ecomm@ email addresses
       • Instagram, Facebook and X links
     Placeholders (replace before launch):
-      • Photos: slide 2, Shop watches and Visit us use KYROS brand photos (confirm usage
+      • Photos: slide 2 and Shop watches use KYROS brand photos, Visit us a David Plein photo (confirm usage
         rights with Daniel); slides 1, 3, 4 and 5, Shop jewelry and the special offers band are stock photos.
       • Store addresses and phone numbers come from kyroslife.com/where-to-buy (18 locations,
         including 2 "10 Secondz" stores). Confirm them, and the "17 stores" claim, with TimeKeepers
@@ -617,9 +617,18 @@
   .split--bleed { max-width: none; margin: 0; padding: 0; gap: 0; }
   .split--bleed .cat { border-radius: 0; min-height: clamp(560px, 80vh, 820px); }
   .split--bleed .cat__body { padding: clamp(28px, 5vw, 64px); }
-  /* The watch in this photo is on the left, so the text sits on the right, over the darker table. */
-  .visit.visit--bleed { border-radius: 0; min-height: clamp(520px, 72vh, 760px); justify-content: flex-end; }
-  .visit.visit--bleed::before { background: linear-gradient(270deg, rgba(14,13,12,.92) 0%, rgba(14,13,12,.72) 36%, rgba(14,13,12,0) 66%); }
+  /* The watches fill the middle of this photo, so on larger screens the photo takes the left of the
+     section and fades into black on the right, where the text sits. */
+  .visit.visit--bleed { border-radius: 0; min-height: clamp(520px, 72vh, 760px); justify-content: flex-end; background: #0e0d0c; }
+  .visit.visit--bleed img { width: 66%; object-position: 88% 50%; }   /* 88%: moves the four watches left, clear of the fade */
+  .visit.visit--bleed::before { background: linear-gradient(270deg, #0e0d0c 0%, #0e0d0c 34%, rgba(14,13,12,0) 43%); }
+  /* Tablets: photo on top, text below (as on phones), so the four watches are never under the text. */
+  @media (min-width: 861px) and (max-width: 1100px) {
+    .visit.visit--bleed { flex-direction: column; align-items: stretch; justify-content: flex-start; min-height: 0; }
+    .visit.visit--bleed img { position: relative; z-index: 0; width: 100%; height: 46vw; object-position: 50% 50%; }
+    .visit.visit--bleed::before { inset: 0 0 auto 0; height: 46vw; z-index: 1; background: linear-gradient(0deg, #0e0d0c 0%, rgba(14,13,12,0) 30%); }
+    .visit--bleed .visit__body { position: relative; z-index: 2; max-width: 640px; padding: 8px var(--gutter) 64px; }
+  }
   .visit--bleed .visit__body { max-width: calc(var(--edge) + 460px); padding: clamp(32px, 6vw, 72px) var(--edge) clamp(32px, 6vw, 72px) clamp(32px, 4vw, 48px); }
 
   /* ═══ TRUST STRIP ═══════════════════════════════════════════════════════════════════════════ */
@@ -759,6 +768,12 @@
   /* Card buttons, top right of every product photo: wishlist, compare, add to bag. */
   .card-acts { position: absolute; top: 10px; right: 10px; z-index: 2; display: grid; gap: 8px; }
   .card-acts .wish { position: static; }
+  /* Hover labels: the button's name appears to its left ("Compare", "Add to bag"…). */
+  .card-acts > button { position: relative; }
+  .card-acts > button::after { content: attr(data-tip); position: absolute; right: calc(100% + 8px); top: 50%; transform: translate(4px, -50%); padding: 5px 9px; border-radius: 3px; background: #141210; color: #f3eee7; font-family: var(--heading); font-size: 11px; font-weight: 600; letter-spacing: .04em; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 150ms ease, transform 150ms var(--ease-out); }
+  .card-acts > button[aria-pressed="true"]::after, .card-acts > button[data-added="true"]::after { content: attr(data-tip-on); }
+  @media (hover: hover) and (pointer: fine) { .card-acts > button:hover::after { opacity: 1; transform: translate(0, -50%); } }
+  .card-acts > button:focus-visible::after { opacity: 1; transform: translate(0, -50%); }
   .act { display: grid; place-items: center; width: 38px; height: 38px; padding: 0; border-radius: 50%; border: 1px solid rgba(20,19,18,.08); background: rgba(255,255,255,.9); color: var(--tile-ink); cursor: pointer; transition: transform 160ms var(--ease-out), background-color 160ms ease, color 160ms ease; }
   .act svg { width: 18px; height: 18px; }
   .act:active { transform: scale(0.9); }
@@ -801,7 +816,7 @@
   .visit p { margin: 0; color: rgba(255,255,255,.78); }
   .visit__ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
   .visit__ctas > .btn { flex-basis: 100%; max-width: max-content; }   /* the store button gets its own row */
-  .visit__contact { display: flex; gap: 10px; flex-wrap: wrap; }   /* Call us and Let&rsquo;s chat: small, side by side */
+  .visit__contact { display: flex; gap: 10px; flex-wrap: wrap; }   /* Call us and Let&rsquo;s talk: small, side by side */
 
   /* ═══ SPECIAL OFFERS SIGN-UP BAND ═══════════════════════════════════════════════════════════ */
   .club { position: relative; overflow: hidden; border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface); color: var(--dark-ink); display: grid; grid-template-columns: 1.2fr 1fr; align-items: center; gap: 24px; }
@@ -1153,7 +1168,7 @@
     .slide__img::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 38%; background: linear-gradient(0deg, #0d0c0b 0%, rgba(13,12,11,0) 100%); }
     .slide__content { padding-bottom: 84px; }
     .visit.visit--bleed { display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start; min-height: 0; }
-    .visit--bleed img { position: relative; z-index: 0; height: 320px; object-position: 38% 50%; }
+    .visit.visit--bleed img { position: relative; z-index: 0; width: 100%; height: 320px; object-position: 50% 50%; }
     .visit.visit--bleed::before { inset: 0 0 auto 0; height: 320px; z-index: 1; background: linear-gradient(0deg, #0d0c0b 0%, rgba(13,12,11,0) 45%); }
     .visit--bleed .visit__body { position: relative; z-index: 2; max-width: none; padding: 4px var(--gutter) 52px; }
     .split--bleed .cat { min-height: 520px; }
@@ -2584,9 +2599,9 @@
           <span class="quick">View product ${icon("i-arrow")}</span>
         </a>
         <div class="card-acts">
-          <button class="wish" type="button" aria-pressed="${wished.has(href)}" aria-label="Save ${esc(p.brand + " " + p.name)} to wishlist" data-wish="${href}">${icon("i-heart")}</button>
-          <button class="act" type="button" aria-pressed="${compare.has(p.slug)}" aria-label="Compare ${esc(p.brand + " " + p.name)}" data-compare="${p.slug}">${icon("i-compare")}</button>
-          <button class="act" type="button" aria-label="Add ${esc(p.brand + " " + p.name)} to bag" data-add-bag="${p.slug}">${icon("i-bag")}</button>
+          <button class="wish" type="button" data-tip="Add to wishlist" data-tip-on="Remove from wishlist" aria-pressed="${wished.has(href)}" aria-label="Save ${esc(p.brand + " " + p.name)} to wishlist" data-wish="${href}">${icon("i-heart")}</button>
+          <button class="act" type="button" data-tip="Compare" data-tip-on="Remove from compare" aria-pressed="${compare.has(p.slug)}" aria-label="Compare ${esc(p.brand + " " + p.name)}" data-compare="${p.slug}">${icon("i-compare")}</button>
+          <button class="act" type="button" data-tip="Add to bag" data-tip-on="Added" aria-label="Add ${esc(p.brand + " " + p.name)} to bag" data-add-bag="${p.slug}">${icon("i-bag")}</button>
         </div>
         <div>
           <div class="product__brand">${esc(p.brand)}</div>
