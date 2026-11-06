@@ -756,6 +756,28 @@
   .badge--sale { background: var(--red); }
   .wish { position: absolute; top: 10px; right: 10px; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(20,19,18,.08); background: rgba(255,255,255,.9); color: var(--tile-ink); cursor: pointer; transition: transform 160ms var(--ease-out), color 160ms ease; }
   .wish svg { width: 18px; height: 18px; transition: fill 160ms ease; }
+  /* Card buttons, top right of every product photo: wishlist, compare, add to bag. */
+  .card-acts { position: absolute; top: 10px; right: 10px; z-index: 2; display: grid; gap: 8px; }
+  .card-acts .wish { position: static; }
+  .act { display: grid; place-items: center; width: 38px; height: 38px; padding: 0; border-radius: 50%; border: 1px solid rgba(20,19,18,.08); background: rgba(255,255,255,.9); color: var(--tile-ink); cursor: pointer; transition: transform 160ms var(--ease-out), background-color 160ms ease, color 160ms ease; }
+  .act svg { width: 18px; height: 18px; }
+  .act:active { transform: scale(0.9); }
+  .act[aria-pressed="true"] { background: #1f1e1b; color: #fff; }
+  .act[data-added="true"] { background: #1f6b3a; color: #fff; }
+  @media (hover: hover) and (pointer: fine) { .act:hover { border-color: rgba(20,19,18,.35); } }
+  @media (max-width: 640px) { .card-acts { top: 8px; right: 8px; gap: 6px; } .card-acts .wish, .act { width: 34px; height: 34px; } .act svg, .card-acts .wish svg { width: 16px; height: 16px; } }
+  /* Compare tray: appears once a piece is added to compare, and links to the compare page. */
+  .compare-tray { position: fixed; z-index: 70; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); display: flex; align-items: center; gap: 4px; padding: 6px; border-radius: 999px; background: #141210; color: #f3eee7; border: 1px solid #2c2926; box-shadow: 0 18px 40px -18px rgba(0,0,0,.8); font-family: var(--heading); font-size: 13px; font-weight: 600; }
+  .compare-tray[hidden] { display: none; }
+  .compare-tray a { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 16px; border-radius: 999px; background: #f3eee7; color: #141210; white-space: nowrap; }
+  .compare-tray a svg { width: 16px; height: 16px; }
+  .compare-tray button { display: grid; place-items: center; width: 38px; height: 38px; border: 0; border-radius: 50%; background: none; color: #bdb5aa; cursor: pointer; }
+  .compare-tray button svg { width: 16px; height: 16px; }
+  @media (max-width: 860px) { .compare-tray { bottom: calc(86px + env(safe-area-inset-bottom, 0px)); } }
+  /* Short message at the top of the screen ("Added to your bag", "You can compare up to 4"). */
+  .notice { position: fixed; z-index: 95; left: 50%; top: calc(16px + env(safe-area-inset-top, 0px)); transform: translate(-50%, -12px); opacity: 0; pointer-events: none; width: max-content; max-width: calc(100vw - 32px); display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; padding: 12px 16px; border-radius: 3px; background: #141210; color: #f3eee7; border: 1px solid #2c2926; box-shadow: 0 20px 50px -20px rgba(0,0,0,.8); font-size: 14px; transition: opacity 200ms ease, transform 260ms var(--ease-out); }
+  .notice[data-show="true"] { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+  .notice a { color: #fff; font-weight: 600; text-decoration: underline; white-space: nowrap; }
   .wish:active { transform: scale(0.9); }
   .wish[aria-pressed="true"] { color: var(--red-bright); }
   .wish[aria-pressed="true"] svg { fill: currentColor; }
@@ -779,7 +801,7 @@
   .visit p { margin: 0; color: rgba(255,255,255,.78); }
   .visit__ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
   .visit__ctas > .btn { flex-basis: 100%; max-width: max-content; }   /* the store button gets its own row */
-  .visit__contact { display: flex; gap: 10px; flex-wrap: wrap; }   /* Call us and Chat with us: small, side by side */
+  .visit__contact { display: flex; gap: 10px; flex-wrap: wrap; }   /* Call us and Let&rsquo;s chat: small, side by side */
 
   /* ═══ SPECIAL OFFERS SIGN-UP BAND ═══════════════════════════════════════════════════════════ */
   .club { position: relative; overflow: hidden; border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface); color: var(--dark-ink); display: grid; grid-template-columns: 1.2fr 1fr; align-items: center; gap: 24px; }
@@ -1401,6 +1423,8 @@
     <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></symbol>
     <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.2-4 4.3-6 8-6s6.8 2 8 6"/></symbol>
     <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 20s-7.5-4.6-9.2-9.4C1.6 7 4 4 7.2 4c2 0 3.6 1.1 4.8 2.8C13.2 5.1 14.8 4 16.8 4 20 4 22.4 7 21.2 10.6 19.5 15.4 12 20 12 20z"/></symbol>
+    <symbol id="i-compare" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4 3 8l4 4"/><path d="M3 8h13"/><path d="m17 12 4 4-4 4"/><path d="M21 16H8"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></symbol>
     <symbol id="i-bag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></symbol>
     <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></symbol>
     <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></symbol>
@@ -1464,6 +1488,7 @@
       <button type="button" data-menu-open="sunglasses">Sunglasses</button>
       <button type="button" data-menu-open="stores">Stores</button>
       <a class="is-sale" href="https://www.timekeepers-ng.com/shop/category/watches-sales-102">Sale</a>
+      <a href="https://www.timekeepers-ng.com/blog">Blog</a>
     </nav>
     <div class="tools">
       <button class="icon-btn" type="button" aria-label="Search" aria-controls="search" aria-expanded="false" data-search-toggle><svg><use href="#i-search"/></svg></button>
@@ -1587,8 +1612,8 @@
         <ul>
           <li><a href="https://www.timekeepers-ng.com/shop/category/watches-1">Watches</a></li>
           <li><a href="https://www.timekeepers-ng.com/shop/category/jewelry-6">Jewelry</a></li>
-          <li><a href="https://www.timekeepers-ng.com/shop/category/men-men-s-accessories-123">Men&rsquo;s accessories</a></li>
-          <li><a href="https://www.timekeepers-ng.com/shop/category/women-women-s-accessories-130">Women&rsquo;s accessories</a></li>
+          <li><a href="https://www.timekeepers-ng.com/shop/category/men-119">Men</a></li>
+          <li><a href="https://www.timekeepers-ng.com/shop/category/women-125">Women</a></li>
           <li><a href="https://www.timekeepers-ng.com/shop/category/watches-new-arrival-100">New arrivals</a></li>
           <li><a href="https://www.timekeepers-ng.com/shop/category/watches-sales-102">Sale</a></li>
         </ul>
@@ -1601,6 +1626,8 @@
           <li><a href="https://www.timekeepers-ng.com/contactus">Contact us</a></li>
           <li><a href="https://www.timekeepers-ng.com/my/orders">My orders</a></li>
           <li><a href="https://www.timekeepers-ng.com/shop/all-brands">All brands</a></li>
+          <li><a href="https://www.timekeepers-ng.com/blog">Blog</a></li>
+          <li><a href="https://www.timekeepers-ng.com/terms">Legal</a></li>
         </ul>
       </div>
       <div class="footer__contact">
@@ -1632,6 +1659,9 @@
       <nav aria-label="More">
         <a href="https://www.timekeepers-ng.com/about-us">About</a>
         <a href="https://www.timekeepers-ng.com/contactus">Contact</a>
+        <a href="https://www.timekeepers-ng.com/terms#terms-of-use">Terms of use</a>
+        <a href="https://www.timekeepers-ng.com/terms#terms-of-sale">Terms of sale</a>
+        <a href="https://www.timekeepers-ng.com/terms#privacy">Privacy policy</a>
       </nav>
       <div class="where" aria-label="Our stores" data-countries>Nigeria · 17 stores</div>
     </div>
@@ -1939,6 +1969,8 @@
     { type: "stores", id: "stores", label: "Store locations", group: "Visit us", icon: "i-pin" },
     { type: "link", label: "Contact us", href: `${SHOP}/contactus` },
     { type: "link", label: "About us", href: `${SHOP}/about-us`, group: "Company" },
+    { type: "link", label: "Blog", href: `${SHOP}/blog` },
+    { type: "link", label: "Legal", href: `${SHOP}/terms` },
     { type: "link", label: "Sign in", href: `${SHOP}/web/login`, icon: "i-user" },
   ];
 
@@ -2531,6 +2563,20 @@
   const wishCount = document.querySelector("[data-wish-count]");
   const updateWishCount = () => document.querySelectorAll("[data-wish-count]").forEach((c) => { c.textContent = wished.size; c.hidden = wished.size === 0; });
 
+  // Compare: up to 4 pieces, remembered in this browser only. On the real site use Odoo's own
+  // product comparison (/shop/compare), which also allows up to 4.
+  const COMPARE_KEY = "tk-compare", COMPARE_MAX = 4;
+  const compare = (() => { try { return new Set(JSON.parse(localStorage.getItem(COMPARE_KEY) || "[]")); } catch { return new Set(); } })();
+  const saveCompare = () => { try { localStorage.setItem(COMPARE_KEY, JSON.stringify([...compare])); } catch {} drawCompareTray(); };
+
+  // Short message at the top of the screen.
+  const notify = (html) => {
+    let n = document.querySelector(".notice");
+    if (!n) { n = document.createElement("div"); n.className = "notice"; n.setAttribute("role", "status"); document.body.appendChild(n); }
+    n.innerHTML = html; n.dataset.show = "true";
+    clearTimeout(n._t); n._t = setTimeout(() => (n.dataset.show = "false"), 3200);
+  };
+
   // One product card.
   function productCard(p) {
     const href = `${SHOP}/shop/${p.slug}`;
@@ -2542,7 +2588,11 @@
           ${badge}
           <span class="quick">View product ${icon("i-arrow")}</span>
         </a>
-        <button class="wish" type="button" aria-pressed="${wished.has(href)}" aria-label="Save ${esc(p.brand + " " + p.name)} to wishlist" data-wish="${href}">${icon("i-heart")}</button>
+        <div class="card-acts">
+          <button class="wish" type="button" aria-pressed="${wished.has(href)}" aria-label="Save ${esc(p.brand + " " + p.name)} to wishlist" data-wish="${href}">${icon("i-heart")}</button>
+          <button class="act" type="button" aria-pressed="${compare.has(p.slug)}" aria-label="Compare ${esc(p.brand + " " + p.name)}" data-compare="${p.slug}">${icon("i-compare")}</button>
+          <button class="act" type="button" aria-label="Add ${esc(p.brand + " " + p.name)} to bag" data-add-bag="${p.slug}">${icon("i-bag")}</button>
+        </div>
         <div>
           <div class="product__brand">${esc(p.brand)}</div>
           <div class="product__name">${esc(p.name)}</div>
@@ -2562,6 +2612,43 @@
     updateWishCount();
   });
   updateWishCount();
+
+  // Compare buttons and "Add to bag" buttons on the cards (one listener for the whole page).
+  document.addEventListener("click", (e) => {
+    const c = e.target.closest("[data-compare]");
+    if (c) {
+      const k = c.dataset.compare;
+      if (compare.has(k)) compare.delete(k);
+      else if (compare.size >= COMPARE_MAX) { notify(`You can compare up to ${COMPARE_MAX} pieces. Remove one first. <a href="${SHOP}/shop/compare">Compare now</a>`); return; }
+      else compare.add(k);
+      document.querySelectorAll(`[data-compare="${CSS.escape(k)}"]`).forEach((b) => b.setAttribute("aria-pressed", String(compare.has(k))));
+      saveCompare();
+      return;
+    }
+    const a = e.target.closest("[data-add-bag]");
+    if (a) {
+      bag.add(a.dataset.addBag);
+      a.dataset.added = "true"; a.innerHTML = icon("i-check");
+      clearTimeout(a._t); a._t = setTimeout(() => { a.dataset.added = "false"; a.innerHTML = icon("i-bag"); }, 1600);
+      notify(`Added to your bag. <a href="${SHOP}/shop/cart">View bag</a>`);
+    }
+  });
+  // The tray at the bottom that links to the compare page.
+  function drawCompareTray() {
+    if (/(compare|checkout|bag)\.html$/.test(location.pathname)) return;   // not on the compare, bag or checkout page
+    let t = document.querySelector(".compare-tray");
+    if (!t) {
+      t = document.createElement("div"); t.className = "compare-tray"; t.setAttribute("role", "region"); t.setAttribute("aria-label", "Compare");
+      t.innerHTML = `<a href="${SHOP}/shop/compare">${icon("i-compare")} <span data-compare-n></span></a><button type="button" aria-label="Clear compare" data-compare-clear>${icon("i-close")}</button>`;
+      document.body.appendChild(t);
+      t.querySelector("[data-compare-clear]").addEventListener("click", () => {
+        compare.clear(); document.querySelectorAll("[data-compare]").forEach((b) => b.setAttribute("aria-pressed", "false")); saveCompare();
+      });
+    }
+    t.querySelector("[data-compare-n]").textContent = `Compare ${compare.size} of ${COMPARE_MAX}`;
+    t.hidden = compare.size === 0;
+  }
+  drawCompareTray();
 
   // Shopping bag (design preview only): items are kept in this browser and counted on the header
   // bag icon. On the real site the bag is the shop's own cart.
@@ -2927,7 +3014,7 @@
   /* ═══ SHARED WITH THE OTHER PAGES ═══════════════════════════════════════════════════════════
      The shop, product, brands, stores, contact, about and bag pages use the same header, menu and
      footer as this page, plus these helpers (their own page script reads them from window.TK). */
-  window.TK = { searchProducts, locate, byDistance, fmtKm, locateError, getPos: () => myPos, MENU, STORES, COUNTRIES, PHONE, EMAIL, SHOP, C, IMG, LOGO, esc, icon, naira, plural, productCard, wished, bag, reduce, isPhone, directions, telHref, mapSrc, setText, renderers, openMenu };
+  window.TK = { compare, saveCompare, COMPARE_MAX, notify, searchProducts, locate, byDistance, fmtKm, locateError, getPos: () => myPos, MENU, STORES, COUNTRIES, PHONE, EMAIL, SHOP, C, IMG, LOGO, esc, icon, naira, plural, productCard, wished, bag, reduce, isPhone, directions, telHref, mapSrc, setText, renderers, openMenu };
 
   /* ═══ PREVIEW LINKS (design preview only: remove when building into the real site) ══════════
      In this preview, links to the shop's category, product, brands, contact, about and bag pages
@@ -2943,13 +3030,17 @@
       if (p === "/shop/cart") return "bag.html";
       if (p === "/contactus") return "contact.html";
       if (p === "/about-us") return "about.html";
+      if (p === "/blog") return "blog.html";
+      if (p === "/terms") return "legal.html" + u.hash;
+      if (p === "/shop/compare") return "compare.html";
       if (/^\/shop\/[^/]+-\d+$/.test(p)) return "product.html?p=" + encodeURIComponent(p.split("/")[2]);
       return null;
     };
     // Point the links themselves at the preview pages, so hovering, opening in a new tab and long-press
     // all use them too. Links drawn later (the menu) are updated when the pointer or focus reaches them.
-    const relink = (a) => { if (a.target === "_blank") return; const to = route(a.href); if (to) a.setAttribute("href", to); };
+    const relink = (a) => { const to = route(a.href); if (to) a.setAttribute("href", to); };
     document.querySelectorAll("a[href]").forEach(relink);
+    document.querySelectorAll(".chip[data-href]").forEach((c) => { const to = route(c.dataset.href); if (to) c.dataset.href = to; });
     ["pointerover", "focusin", "touchstart"].forEach((ev) => document.addEventListener(ev, (e) => {
       const a = e.target.closest && e.target.closest("a[href]");
       if (a) relink(a);
@@ -3076,6 +3167,7 @@
   const TITLES = {
     "watches-police-61": "Police watches", "men-men-s-metal-watches-120": "Men's metal watches", "women-women-s-metal-watches-126": "Women's metal watches",
     "jewelry-6": "Jewelry", "watches-new-arrival-100": "New arrivals", "watches-sales-102": "Sale", "watches-guess-collection-35": "Guess Collection watches", "watches-sekonda-11": "Sekonda watches",
+    "jewelry-men": "Men's jewelry", "jewelry-women": "Women's jewelry", "jewelry-bracelets": "Bracelets", "jewelry-necklaces": "Necklaces", "jewelry-earrings": "Earrings",
   };
   const CHIPS = [["", "All"], ["watches-new-arrival-100", "New in"], ["men-men-s-metal-watches-120", "Men"], ["women-women-s-metal-watches-126", "Women"], ["jewelry-6", "Jewelry"], ["watches-sales-102", "Sale"]];
   const slug = qs.get("cat") || "";
@@ -3099,8 +3191,11 @@
     else if (/watch/.test(s)) list = list.filter((p) => p.cat === "watches");
     const b = BRAND_SLUGS.find(([k]) => new RegExp("(^|-)" + k + "(-|$)").test(s));
     if (b) list = list.filter((p) => p.brand === b[1]);
-    if (/(^|-)female|ladies|^women/.test(s)) list = list.filter((p) => p.gender !== "Male");
-    else if (/(^|-)male(-|$)|^men-/.test(s)) list = list.filter((p) => p.gender !== "Female");
+    if (/(^|-)female|ladies|^women|-women(-|$)/.test(s)) list = list.filter((p) => p.gender !== "Male");
+    else if (/(^|-)male(-|$)|^men-|-men(-|$)/.test(s)) list = list.filter((p) => p.gender !== "Female");
+    // Jewelry by type (proposed categories jewelry-bracelets / -necklaces / -earrings), matched on the product name.
+    const type = (s.match(/-(bracelet|necklace|earring)s?(-|$)/) || [])[1];
+    if (type) list = list.filter((p) => new RegExp(type, "i").test(p.name));
     if (/leather/.test(s)) list = list.filter((p) => p.material === "Leather");
     if (/rubber/.test(s)) list = list.filter((p) => p.material === "Rubber");
     if (/metal/.test(s)) list = list.filter((p) => p.material === "Metal" || p.material === "Mesh");
